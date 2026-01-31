@@ -3,7 +3,7 @@
 //
 // Criador:	Thiago Pereira de Oliveira (theE008)
 // Início: 	01/2026
-// Versão: 	0.1.0
+// Versão: 	0.2.0
 // Status: 	Em desenvolvimento
 //
 // Descrição: Junta duas strings em um buffer simples. 
@@ -39,8 +39,15 @@
 // Função principal da biblioteca 
 size_t concatenar_em_buffer (char* destino, size_t max, const char* a, const char* b);
 
+// Função recursiva
+size_t concatenar_em_buffer_recursivamente (char* destino, size_t max, ...);
+
 //////////////////////////////////////////////////////////////////////
 // Definições
+
+// Deixa concatenar no geral bem mais fácil
+#define concatenar_rec(destino,max,...) \
+    concatenar_em_buffer_recursivamente (destino, max, __VA_ARGS__, NULL)
 
 //////////////////////////////////////////////////////////////////////
 

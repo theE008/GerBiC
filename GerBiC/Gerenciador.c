@@ -27,11 +27,16 @@
 #include "capitalizacao_ascii.h"
 #include "copiar_em_buffer.h"
 #include "arquivo_handler.h"
+#include "comparar_chars.h"
 #include "erro_handler.h"
 
 //////////////////////////////////////////////////////////////////////
 // Definições 
 
+#define BIB "bib"           // Comando de get library
+#define REPO_URL "https://github.com/theE008/GerBiC.git" // Próprio repo 
+#define TMP_REPO "libs/.tmp_repo" // Arquivo temporário
+                           
 #define LIBS "libs"         // Arquivo ./lib 
 #define BUILD "build"       // Arquivo ./build 
 #define SRC "src"           // Arquivo ./src
@@ -46,6 +51,62 @@
 
 int main (int argc, char* argv [])
 {
+    // Vê se o usuário tá tentando rodar "bib"
+    if (argc == 3)
+    {
+        int resp = comparar_chars (argv [1], BIB);
+        printf ("Diferença entre input e comando '%s': %d\n", BIB, resp);
+
+        if (!resp) // Se igual
+        {
+            char cmd[512]; 
+
+            // git clone --no-checkout REPO TMPspongebob flowey theme
+            concatenar_em_buffer(cmd, 512, "", "git clone --no-checkout ");
+            concatenar_em_buffer(cmd, 512, cmd, REPO_URL);
+            concatenar_em_buffer(cmd, 512, cmd, " ");
+            concatenar_em_buffer(cmd, 512, cmd, TMP_REPO);
+            system(cmd);
+
+            // cd TMP && git sparse-checkout init --cone
+            concatenar_em_buffer(cmd, 512, "", "cd ");
+            concatenar_em_buffer(cmd, 512, cmd, TMP_REPO);
+            concatenar_em_buffer(cmd, 512, cmd, " && git sparse-checkout init --cone");
+            system(cmd);
+
+            // cd TMP && git sparse-checkout set libs/<modulo>
+            concatenar_em_buffer(cmd, 512, "", "cd ");
+            concatenar_em_buffer(cmd, 512, cmd, TMP_REPO);
+            concatenar_em_buffer(cmd, 512, cmd, " && git sparse-checkout set libs/");
+            concatenar_em_buffer(cmd, 512, cmd, argv[2]);
+            system(cmd);
+
+            // cd TMP && git checkout
+            concatenar_em_buffer(cmd, 512, "", "cd ");
+            concatenar_em_buffer(cmd, 512, cmd, TMP_REPO);
+            concatenar_em_buffer(cmd, 512, cmd, " && git checkout");
+            system(cmd);
+
+            // mv TMP/libs/<modulo> libs/<modulo>
+            concatenar_em_buffer(cmd, 512, "", "mv ");
+            concatenar_em_buffer(cmd, 512, cmd, TMP_REPO);
+            concatenar_em_buffer(cmd, 512, cmd, "/libs/");
+            concatenar_em_buffer(cmd, 512, cmd, argv[2]);
+            concatenar_em_buffer(cmd, 512, cmd, " libs/");
+            concatenar_em_buffer(cmd, 512, cmd, argv[2]);
+            system(cmd);
+
+            // rm -rf TMP
+            concatenar_em_buffer(cmd, 512, "", "rm -rf ");
+            concatenar_em_buffer(cmd, 512, cmd, TMP_REPO);
+            system(cmd);
+        }
+        else
+        erro_se ("Comando não encontrado", 1);       
+
+        return 0;
+    }
+
     // Garante dois argumentos 
     if (argc != 2)
     {

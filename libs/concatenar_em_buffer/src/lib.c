@@ -13,6 +13,7 @@
 
 // Outros Headers
 #include <stddef.h>
+#include <stdarg.h> // Para versão recursiva
 
 //////////////////////////////////////////////////////////////////////
 // Variáveis
@@ -37,6 +38,37 @@ size_t concatenar_em_buffer (char* destino, size_t max, const char* a, const cha
     destino [tam_a + tam_b] = '\0';
 
     return tam_a + tam_b;
+}
+
+// Função recursiva
+size_t concatenar_em_buffer_recursivamente (char* destino, size_t max, ...)
+{
+    erro_se_nulo(destino);
+
+    size_t usado = 0;
+    destino[0] = '\0';
+
+    va_list args;
+    va_start(args, max);
+
+    const char* atual;
+
+    while ((atual = va_arg(args, const char*)) != NULL)
+    {
+        size_t tam = tamanho_chars(atual);
+
+        erro_se("Destino menor que fontes", usado + tam >= max);
+
+        for (size_t i = 0; i < tam; i++)
+            destino[usado + i] = atual[i];
+
+        usado += tam;
+        destino[usado] = '\0';
+    }
+
+    va_end(args);
+
+    return usado;
 }
     
 //////////////////////////////////////////////////////////////////////

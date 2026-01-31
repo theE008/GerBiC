@@ -1,0 +1,22 @@
+# build dirs
+build/
+build-*/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Binaries
+*.o
+*.a
+*.so
+*.out
+bin/
+
+# Editor / OS
+*.swp
+*.log
+.DS_Store
+
