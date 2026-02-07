@@ -115,14 +115,14 @@
 #define T_INCLD "include/" // Pasta do header dos módulos
 #define T_SOURC "src/" // Pasta do source
 #define T_MAINS T_SOURC "main.c" // Main                       
-#define T_TMPRE T_LIBFL ".tmp_repo" // Pasta temporária do git
+#define T_TMPRE ".tmp_repo" // Pasta temporária do git
 #define T_SYSTM "GerBiC/" // Pasta do sistema 
 #define T_SELFN "Gerenciador.c" // Nome desse arquivo aqui
 #define T_MNCMK T_SYSTM "CMake_dir.txt" // CMake do sistema 
 #define T_MDCMK T_SYSTM "CMake_lib.txt" // CMake dos módulos
 #define T_GCLN1 "git clone --filter=blob:none --sparse " \
-                "https://github.com/theE008/GerBiC.git " \
-                T_LIBFL " && cd " T_LIBFL " && " \
+                "https://github.com/theE008/GerBiC.git " T_TMPRE\
+                " && cd " T_TMPRE " && " \
                 "git sparse-checkout set " 
 #define T_GCLN2 " && cp -r " T_LIBFL "* ../" T_LIBFL " && " \
                 "cd .. && rm -rf " T_TMPRE 
@@ -405,17 +405,16 @@ int main (int argc, char * argv [])
             copiar_arquivo (CAT_TMP (T_SYSTM, T_SELFN), T_SOURC "main.c"); 
 
             // Então, compila 
-            system ("cmake .. && make");
+            system ("cd " T_BUILD " && cmake .. && make");
 
             // E aí move tudo de volta
             // [mantém backup [escolha de design seguro? preguiça? quem sabe!]]
             copiar_arquivo (T_SOURC "backup.c", T_MAINS);
 
             // Talvez depois, passar o compilado pro diretório certo
-            system 
-            (
-                 "PAI=$(basename $(dirname $(pwd)))" 
-                 "&& cp \"bin/$PAI\" \"../GerBiC/GerenciadorBuild\""
+            system (
+                "PROJ_NOME=$(basename $(pwd)) && " // Aqui ele pega "GerBiC" (raiz do projeto)
+                "cp \"build/bin/$PROJ_NOME\" \"GerBiC/GerenciadorBuild\""
             );
         }
 
@@ -427,7 +426,7 @@ int main (int argc, char * argv [])
             // Pega argumentos de um a um
             for (int x = 2; x < argc; x++) BUFFER_UNIR (b [0], b [0].dados, " ", argv [x]);
 
-            system (CAT_TMP ("cmake", b [0].dados, " .. && make && ./bin/*"));
+            system (CAT_TMP ("cd " T_BUILD " && cmake ", b [0].dados, " .. && make && ./bin/*"));
         }
 
         // Cmdline 
