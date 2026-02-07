@@ -40,7 +40,7 @@
 // Copia um arquivo para outro lugar 
 void copiar_arquivo (const char* path_origem, const char* path_destino);
 
-// Cria um diretório 
+// Cria um diretório (retorna true se já existia)
 bool criar_diretorio (const char* path);
 
 //////////////////////////////////////////////////////////////////////
@@ -49,13 +49,13 @@ bool criar_diretorio (const char* path);
 // Transforma a abertura e fechamento de arquivos em blocos
 // Para garantir que o usuário não vai simplesmente esquecer
 // Estilo Python.
-#define usar_arquivo(path,nome,modo) \
+#define USAR_ARQUIVO(path,nome,modo) \
        for \
        ( \
             FILE* nome = fopen (path, modo); \
             nome != NULL; \
             fclose (nome), nome = NULL \
-        ) // Não é lindo?
+       ) // Não é lindo?
 
 //////////////////////////////////////////////////////////////////////
 

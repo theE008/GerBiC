@@ -1,0 +1,53 @@
+//////////////////////////////////////////////////////////////////////
+// substituirTexto
+//
+// Criador: Thiago Pereira de Oliveira
+// Início:  05/02/2026
+// Versão:  0.1.0
+// Status:  Em desenvolvimento
+//
+// Descrição: Substitui textos! 
+//
+//////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////
+// Headers Padrão
+
+#ifndef SUBSTITUIRTEXTO_H
+#define SUBSTITUIRTEXTO_H
+
+#include <stddef.h>
+#include <stdbool.h>
+
+//////////////////////////////////////////////////////////////////////
+// Headers Próprios
+
+#include "buffer.h"
+
+//////////////////////////////////////////////////////////////////////
+// Definições
+
+
+
+//////////////////////////////////////////////////////////////////////
+// Valores
+
+
+
+//////////////////////////////////////////////////////////////////////
+// Funções
+
+// Substiur um por um 
+char* substituirPrimeiro (Buffer* fonte, const char* regex, const char* alt);
+
+// Substitui todas as instâncias de uma substring por outra 
+// Tem que ser em Buffer pra garantir que não irá estourar o tamanho
+// Lembre-se: isso aqui é TERRÍVEL E CRIMINOSO
+// Atualize isso de forma mais inteligente depois!
+// Só que agora? Não sei exatamente como fazer isso, ficaria muito 
+// complexo da forma original que imaginei
+char* substituirTexto (Buffer* fonte, const char* regex, const char* alt);
+
+//////////////////////////////////////////////////////////////////////
+
+#endif

@@ -25,7 +25,7 @@ void erro_terminal
 {
     printf 
     ( 
-        "\n\n\t\033[1;31mErro no CGL"
+        "\n\n\t\033[1;31mErro no GerBiC"
         "\n\tArquivo: %s"
         "\n\tFunção: %s"
         "\n\tLinha: %d"

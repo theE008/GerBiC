@@ -12,7 +12,7 @@
 
 // Outros Headers
 #include <sys/stat.h> // Para criação de diretórios
-#include <stdio.h>
+#include <stdio.h> // FILE*
 #include <errno.h> // Para saber porque criar o diretório falhou
 
 //////////////////////////////////////////////////////////////////////
@@ -24,22 +24,22 @@
 // Copia um arquivo para outro lugar 
 void copiar_arquivo (const char* path_origem, const char* path_destino)
 {
-    usar_arquivo (path_origem, origem, "rb")
+    USAR_ARQUIVO (path_origem, origem, "rb")
     {
-        usar_arquivo (path_destino, destino, "wb")
-        {
+        USAR_ARQUIVO (path_destino, destino, "wb")
+                {
             char buffer [4096] = "\0";   
             size_t quantos = 0;
 
             for (;(quantos = fread (buffer, 1, sizeof buffer, origem)) > 0;)
-                erro_se 
+                ERRO_SE 
                 (
                     "Erro na escrita", 
                     fwrite (buffer, 1, quantos, destino) != quantos
                 );
         }
 
-        erro_se ("Erro na leitura", ferror (origem));
+        ERRO_SE ("Erro na leitura", ferror (origem));
     }
 }
 
@@ -48,8 +48,8 @@ bool criar_diretorio (const char* path)
 {
     int ret = mkdir(path, 0755);
 
-    erro_se(
-        "Erro na criação do diretório",
+    ERRO_SE(
+        "Caminho inválido",
         ret && errno != EEXIST
     );
 

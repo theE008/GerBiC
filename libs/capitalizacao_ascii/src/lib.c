@@ -8,7 +8,7 @@
 // #include "modules.h"
 
 // Headers de Outros módulos
-#include "tamanho_chars.h"
+#include "tamanhoTexto.h"
 #include "erro_handler.h"
 
 // Outros Headers
@@ -59,9 +59,9 @@ char para_minuscula (char c)
 // Passa todo o texto para maiúsculas 
 void para_maiusculas (char* str) 
 {
-    erro_se_nulo (str);
+    ERRO_SE_NULO (str);
 
-    int tam = tamanho_chars (str);
+    int tam = tamanhoTexto (str);
 
     for (int x = 0; x < tam; x++)
         str [x] = para_maiuscula (str [x]);
@@ -70,9 +70,9 @@ void para_maiusculas (char* str)
 // Passa todo o texto para minúsculas
 void para_minusculas (char* str) 
 {
-    erro_se_nulo (str);
+    ERRO_SE_NULO (str);
 
-    int tam = tamanho_chars (str);
+    int tam = tamanhoTexto (str);
 
     for (int x = 0; x < tam; x++)
         str [x] = para_minuscula (str [x]);

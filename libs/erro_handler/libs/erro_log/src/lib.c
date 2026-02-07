@@ -88,7 +88,7 @@ void erro_log
     fprintf 
     (
         a_log,
-        "\n\n\t[%d] Erro no CGT"
+        "\n\n\t[%d] Erro no GerBiC"
         "\n\tArquivo: %s"
         "\n\tFunção: %s"
         "\n\tLinha: %d"

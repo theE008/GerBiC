@@ -3,7 +3,7 @@
 //
 // Criador:	Thiago Pereira de Oliveira (theE008)
 // Início: 	01/2026
-// Versão: 	0.1.0
+// Versão: 	0.2.0
 // Status: 	Em desenvolvimento
 //
 // Descrição: Cria um sistema de erros unificado, onde o usuário pode
@@ -29,6 +29,9 @@
 // Todas as verificações de segurança são removidas completamente.
 // O programa ficará mais rápido, porém em caso de segmentation fault,
 // nada será registrado.
+//
+// Modificado para não tratar mais início e fim do programa [destrutor_handler]
+// E para as macros terem seus nomes em caixa alta.
 //   
 //////////////////////////////////////////////////////////////////////
 
@@ -54,6 +57,7 @@
 //////////////////////////////////////////////////////////////////////
 // Variáveis
 
+
 //////////////////////////////////////////////////////////////////////
 // Funções
 
@@ -77,22 +81,25 @@ void erro_handler
 //////////////////////////////////////////////////////////////////////
 // Definições
 
-#define ERRO_HANDLER_SAFEMODE 1 
-#define ERRO_HANDLER_LOGRMODE 2 
-#define ERRO_HANDLER_FREEMODE 3
-
 // O modo padrão é o mais seguro
 #ifndef ERRO_HANDLER_MODE
-    #define ERRO_HANDLER_MODE ERRO_HANDLER_SAFEMODE
+    #define ERRO_HANDLER_MODE 1
 #endif
 
 // Definição padrão (mensagem de erro se teste for true)
-#define erro_se(msg,tst) \
-    erro_handler (__FILE__, __func__, msg, __LINE__, tst) 
+#if ERRO_HANDLER_MODE != 3
+    #define ERRO_SE(msg,tst) \
+        erro_handler (__FILE__, __func__, msg, __LINE__, tst) 
+#else
+    #define ERRO_SE(msg,tst) ((void) 0)
+#endif
 
 // Uso mais específico, para padronização
-#define erro_se_nulo(ptr) \
+#define ERRO_SE_NULO(ptr) \
     erro_handler (__FILE__, __func__, "Erro: Ponteiro nulo. '" #ptr "'", __LINE__, ptr == NULL) 
+
+// Retorna o modo do handler 
+int erro_handler_modo ();
 
 //////////////////////////////////////////////////////////////////////
 

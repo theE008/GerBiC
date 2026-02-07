@@ -20,3 +20,5 @@ bin/
 *.log
 .DS_Store
 
+# Logs do GerBiC
+erro_log.txt

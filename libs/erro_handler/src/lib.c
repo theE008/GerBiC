@@ -9,34 +9,14 @@
 #include "erro_terminal.h" // Necessita de ambos para funcionar 
                            
 // Outros Headers
-#include <stdlib.h>
 #include <stdio.h>
 
 //////////////////////////////////////////////////////////////////////
 // Variáveis
 
+
 //////////////////////////////////////////////////////////////////////
 // Funções
-
-// Apenas coloca uma barra na tela ou no log indicando que o programa iniciou 
-static void __attribute__((constructor)) erro_handler_constructor (void)
-{
-    erro_handler_write_chars
-    (
-        "\n//////////////////////////////////////////////////////////////////////\n"
-        "// PROGRAMA INICIADO\n\n"
-    );
-}
-
-// Apenas termina o programa com a barra 
-static void __attribute__((destructor)) erro_handler_destructor (void)
-{
-    erro_handler_write_chars 
-    (
-        "\n// PROGRAMA FINALIZADO\n"
-        "//////////////////////////////////////////////////////////////////////\n\n"
-    );
-}
 
 // Lança textos no local junto com os erros para decorar/informar 
 // melhor.
@@ -45,11 +25,11 @@ void erro_handler_write_chars
     const char* txt 
 )
 {
-    #if ERRO_HANDLER_MODE == ERRO_HANDLER_SAFEMODE
+    #if ERRO_HANDLER_MODE == 1 
         printf ("%s", txt);
     #endif 
 
-    #if ERRO_HANDLER_MODE == ERRO_HANDLER_LOGRMODE
+    #if ERRO_HANDLER_MODE == 2
         erro_log_write_chars (ERRO_LOG_ARQUIVO_PADRAO, txt);
     #endif 
 }
@@ -64,11 +44,11 @@ void erro_handler
     int tst
 )
 {
-    #if ERRO_HANDLER_MODE == ERRO_HANDLER_SAFEMODE
+    #if ERRO_HANDLER_MODE == 1 
         if (tst) erro_terminal (arq, func, msg, ln);
     #endif
 
-    #if ERRO_HANDLER_MODE == ERRO_HANDLER_LOGRMODE
+    #if ERRO_HANDLER_MODE == 2
         if (tst) erro_log 
         (
             ERRO_LOG_ARQUIVO_PADRAO,
@@ -78,6 +58,9 @@ void erro_handler
 
     // Se não for nem um nem outro, simplesmente não faz nada 
 }
+
+// Retorna o modo do handler 
+int erro_handler_modo () {return ERRO_HANDLER_MODE;}
 
 //////////////////////////////////////////////////////////////////////
 
